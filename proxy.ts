@@ -22,9 +22,10 @@ export default withAuth(
 // Define which routes to protect/restrict from unauthorized users
 export const config = {
   matcher: [
-    "/protected/:path*",
+    "/workspace/:path*",
     "/admin/:path*",
     "/profile/:path*",
     "/settings/:path*",
   ],
 };
+
