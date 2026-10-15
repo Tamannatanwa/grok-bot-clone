@@ -48,8 +48,11 @@ export default function AppSidebar({
   onCreateAgent,
   onMarketplaceClick,
 }: AppSidebarProps) {
+
   const { data: session } = useSession();
+
   const userName = session?.user?.name ?? "Alex Morgan";
+  const userEmail = session?.user?.email ?? "alex.morgan@example.com";
   const userImage = session?.user?.image;
   const userInitials = userName
     .split(/\s+/)
@@ -117,7 +120,7 @@ export default function AppSidebar({
               tooltip="Marketplace"
             >
               <Store aria-hidden="true" />
-              <span>Marketplace</span>
+              {/* <span>Marketplace</span> */}
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -133,7 +136,15 @@ export default function AppSidebar({
                   {userInitials || <CircleUserRound aria-hidden="true" className="size-5" />}
                 </AvatarFallback>
               </Avatar>
-              <span className="truncate text-sm font-medium">{userName}</span>
+              <p>
+                <span className="truncate text-sm font-medium">{userName}</span>
+              </p>
+              <br/>
+              <p>
+              <span className="truncate text-sm font-medium">{userEmail}</span>
+
+              </p>
+
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
