@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 export type WorkspaceAgent = {
   id: string;
@@ -35,10 +36,10 @@ type AppSidebarProps = {
 };
 
 const sampleAgents: WorkspaceAgent[] = [
-  { id: "research", name: "Research Assistant", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Research" },
-  { id: "sales", name: "Sales Navigator", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Sales" },
-  { id: "support", name: "Support Copilot", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Support" },
-  { id: "content", name: "Content Strategist", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Content" },
+  { id: "nova", name: "Nova Assistant", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Nova" },
+  { id: "atlas", name: "Atlas Researcher", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Atlas" },
+  { id: "echo", name: "Echo Writer", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Echo" },
+  { id: "luna", name: "Luna Planner", image: "https://api.dicebear.com/9.x/bottts/svg?seed=Luna" },
 ];
 
 export default function AppSidebar({
@@ -48,9 +49,11 @@ export default function AppSidebar({
   onCreateAgent,
   onMarketplaceClick,
 }: AppSidebarProps) {
+
   const { data: session } = useSession();
-  const userName = session?.user?.name ?? "Saloni Avhad";
-  const userEmail = session?.user?.email ?? "gameplayapp007@gmail.com";
+
+  const userName = session?.user?.name ?? "Alex Morgan";
+  const userEmail = session?.user?.email ?? "alex.morgan@example.com";
   const userImage = session?.user?.image;
   const userInitials = userName
     .split(/\s+/)
@@ -61,32 +64,26 @@ export default function AppSidebar({
 
   return (
     <Sidebar collapsible="offcanvas" className="border-sidebar-border">
-      <SidebarHeader className="gap-6 px-3 pb-0 pt-5">
-        <div className="flex items-center gap-3 px-2">
-          <Image
-            src="/logo.png"
-            alt=""
-            width={42}
-            height={42}
-            className="size-[42px] rounded-full object-cover"
-            priority
-          />
-          <span className="text-xl font-semibold tracking-tight text-foreground">Orbit</span>
+      <SidebarHeader className="gap-5 p-4">
+        <div className="flex items-center gap-3 px-2 py-1">
+          <Image src="/logo.png" alt="" width={32} height={32} className="rounded-xl" priority />
+          <span className="text-lg font-semibold tracking-tight">Orbit</span>
         </div>
-
+        <Link href="/workspace/create-agent">
         <Button
           type="button"
           onClick={onCreateAgent}
-          className="h-11 w-full justify-start gap-2.5 rounded-xl bg-[var(--orbit-blue)] px-3.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--orbit-blue-hover)] focus-visible:ring-2 focus-visible:ring-[var(--orbit-blue)] focus-visible:ring-offset-2"
+          className="h-10 w-full justify-start gap-2.5 rounded-xl px-3.5"
         >
-          <Plus aria-hidden="true" className="size-[18px]" />
+          <Plus aria-hidden="true" className="size-4" />
           Create New Agent
         </Button>
+        </Link>
       </SidebarHeader>
 
-      <SidebarContent className="gap-0 px-2 pt-8">
-        <SidebarGroup className="p-0">
-          <SidebarGroupLabel className="mb-1 h-7 px-2 text-sm font-medium text-muted-foreground">
+      <SidebarContent className="gap-0 px-2">
+        <SidebarGroup className="p-2">
+          <SidebarGroupLabel className="px-2 text-xs font-medium text-sidebar-foreground/60">
             Your Agents
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -97,16 +94,16 @@ export default function AppSidebar({
                     type="button"
                     isActive={agent.id === activeAgentId}
                     onClick={() => onAgentSelect?.(agent)}
-                    className="h-12 gap-3 rounded-xl px-2.5 text-foreground/90 data-[active=true]:bg-black/[0.035] data-[active=true]:font-semibold data-[active=true]:text-foreground hover:bg-black/[0.04]"
+                    className="h-11 gap-3 rounded-xl px-2.5"
                     tooltip={agent.name}
                   >
-                    <Avatar className="size-9 rounded-full">
-                      {agent.image ? <AvatarImage src={agent.image} alt="" /> : null}
-                      <AvatarFallback className="rounded-full bg-sky-100 text-sky-700">
+                    <Avatar className="size-8 rounded-lg">
+                      {agent.image ? <AvatarImage src={agent.image} alt="" className="rounded-lg" /> : null}
+                      <AvatarFallback className="rounded-lg">
                         <Bot aria-hidden="true" className="size-4" />
                       </AvatarFallback>
                     </Avatar>
-                    <span className="truncate text-[15px]">{agent.name}</span>
+                    <span className="truncate text-sm font-medium">{agent.name}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -115,41 +112,42 @@ export default function AppSidebar({
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="gap-3 p-3">
+      <SidebarFooter className="gap-2 p-3">
+        <SidebarSeparator className="mx-0 w-full" />
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               type="button"
               onClick={onMarketplaceClick}
-              className="h-11 gap-3 rounded-xl px-2.5 text-foreground/90 hover:bg-black/[0.04]"
+              className="h-10 rounded-xl px-2.5"
               tooltip="Marketplace"
             >
-              <Store aria-hidden="true" className="size-[18px]" />
-              <span className="text-[15px] font-medium">Marketplace</span>
+              <Store aria-hidden="true" />
+              {/* <span>Marketplace</span> */}
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </SidebarMenu>
-
-        <SidebarSeparator className="mx-0 w-full" />
-
-        <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               type="button"
-              className="h-auto min-h-[56px] gap-3 rounded-xl px-2 py-2 text-left hover:bg-black/[0.04]"
-              aria-label={`Signed in as ${userName}, ${userEmail}`}
+              className="h-12 rounded-xl px-2.5"
+              aria-label={`Signed in as ${userName}`}
               tooltip={userName}
             >
-              <Avatar className="size-10 border border-border">
+              <Avatar className="size-9">
                 {userImage ? <AvatarImage src={userImage} alt="" /> : null}
-                <AvatarFallback className="bg-muted text-xs font-medium text-muted-foreground">
+                <AvatarFallback>
                   {userInitials || <CircleUserRound aria-hidden="true" className="size-5" />}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex min-w-0 flex-col items-start gap-0.5">
-                <span className="max-w-full truncate text-sm font-semibold text-foreground">{userName}</span>
-                <span className="max-w-full truncate text-xs font-normal text-muted-foreground">{userEmail}</span>
-              </div>
+              <p>
+                <span className="truncate text-sm font-medium">{userName}</span>
+              </p>
+              <br/>
+              <p>
+              <span className="truncate text-sm font-medium">{userEmail}</span>
+
+              </p>
+
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
