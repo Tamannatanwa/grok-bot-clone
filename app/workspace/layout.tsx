@@ -1,12 +1,18 @@
 import React from 'react';
 import AppSidebar from '@/components/custom/workspace/AppSidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 function WorkspaceLaout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex min-h-screen bg-slate-50">
+        <SidebarProvider style={{ '--sidebar-width': '18rem' } as React.CSSProperties}>
             <AppSidebar />
-            <main className="min-w-0 flex-1">{children}</main>
-        </div>
+            <SidebarInset className="min-w-0">
+                <div className="flex h-12 shrink-0 items-center border-b border-border px-3 md:hidden">
+                    <SidebarTrigger />
+                </div>
+                {children}
+            </SidebarInset>
+        </SidebarProvider>
     );
 }
 
