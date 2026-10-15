@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Shuffle } from "lucide-react";
 
@@ -9,12 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const avatarColors = ["#1765f5", "#e94d75", "#e9a928", "#7138df", "#17a882"];
+const initialAvatarSeed = "6hch2zqu";
 
 export default function CreateAgentPage() {
   const router = useRouter();
-  const [avatarIndex, setAvatarIndex] = useState(0);
+  const [avatarSeed, setAvatarSeed] = useState(initialAvatarSeed);
   const [description, setDescription] = useState("");
+
+  function shuffleAvatar() {
+    setAvatarSeed(crypto.randomUUID());
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,21 +32,19 @@ export default function CreateAgentPage() {
       </header>
 
       <form className="create-agent-form" onSubmit={handleSubmit}>
-        <div className="create-agent-avatar-area">
-          <div
-            className="orbit-agent-avatar"
-            style={{ "--agent-avatar-color": avatarColors[avatarIndex] } as CSSProperties}
-            aria-label="Agent avatar preview"
-            role="img"
-          >
-            <span />
-            <span />
-          </div>
+        <div className="create-agent-avatar-area flex flex-col items-center gap-4">
+          <img
+            className="orbit-agent-avatar size-24 rounded-full border border-border bg-muted object-cover shadow-sm"
+            src={`https://api.dicebear.com/10.x/gaze/svg?seed=${encodeURIComponent(avatarSeed)}`}
+            alt="Agent avatar"
+            width={96}
+            height={96}
+          />
           <Button
             type="button"
             variant="outline"
             className="create-agent-shuffle"
-            onClick={() => setAvatarIndex((index) => (index + 1) % avatarColors.length)}
+            onClick={shuffleAvatar}
           >
             <Shuffle aria-hidden="true" />
             Shuffle avatar
